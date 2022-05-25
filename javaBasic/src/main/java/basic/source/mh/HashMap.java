@@ -413,7 +413,7 @@ public class HashMap<K, V> extends AbstractMap<K, V> implements Map<K, V>, Clone
      * @param <K>
      * @param <V>
      */
-    static class Node<K, V> implements Entry<K, V> {
+    public static class Node<K, V> implements Entry<K, V> {
 
         final int hash;
         final K key;

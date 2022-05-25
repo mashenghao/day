@@ -1,10 +1,10 @@
 package basic.source.AHashMap;
 
+import basic.source.mh.AbstractMap;
+import basic.source.mh.HashMap;
+import basic.source.mh.Map;
 import org.junit.Test;
 
-import java.util.AbstractMap;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -29,7 +29,7 @@ public class MainClass {
         map.put(n += 16, "10");
         map.put(n += 16, "10");
         Object o = map.get(33);
-        map.entrySet().add(new HashMap.SimpleEntry<Integer, Object>(5, "5555"));
+
         System.out.println(o);
 
         Map abstractMap = new AbstractMap() {
