@@ -12,6 +12,7 @@
         <module>javaBasic</module>
         <module>algo</module>
         <module>classloader</module>
+        <module>designPattern</module>
     </modules>
 
     <properties>
