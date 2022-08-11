@@ -15,7 +15,7 @@ public class BubbleSort {
     int[] arr = {5, 1, 3, 5, 9, 2, 5, 6, 8, 7};
 
 
-    //经典的冒泡排序算法
+    //经典的冒泡 排序算法
     @Test
     public void sort1() {
         //需要循环几次，每次循环出来一个最值，当n-1个数，排序完，最后一个则不要
