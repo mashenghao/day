@@ -1,4 +1,4 @@
-package cn.mh.aHello;
+package aHello;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

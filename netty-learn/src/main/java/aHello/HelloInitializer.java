@@ -1,4 +1,4 @@
-package cn.mh.aHello;
+package aHello;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
