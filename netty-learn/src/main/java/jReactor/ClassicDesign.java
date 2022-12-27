@@ -55,6 +55,7 @@ public class ClassicDesign {
         public void run() {
             try {
                 InputStream inputStream = socket.getInputStream();
+                //available 返回是可读数，不是全部。 read也是可读数。
                 byte[] buf = new byte[inputStream.available()];
                 int read = inputStream.read(buf);
                 //  。。。。

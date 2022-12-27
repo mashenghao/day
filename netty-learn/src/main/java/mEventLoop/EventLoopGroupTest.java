@@ -4,6 +4,7 @@ import io.netty.channel.EventLoop;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoop;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.util.concurrent.Promise;
 
 /**
  * 事件循环与事件循环组关系
@@ -18,5 +19,7 @@ public class EventLoopGroupTest {
 
         EventLoop eventLoop = eventLoopGroup.next();
         NioEventLoop eventLoop1 = (NioEventLoop) eventLoop;
+
+        Promise<String> promise = eventLoop.newPromise();
     }
 }
