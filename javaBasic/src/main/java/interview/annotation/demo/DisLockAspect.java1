@@ -1,0 +1,92 @@
+package interview.annotation.demo;
+
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.expression.MethodBasedEvaluationContext;
+import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.TypedValue;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+
+import java.lang.reflect.Method;
+
+/**
+ * aop 分布式锁支持
+ *
+ * @author mahao
+ * @date 2022/12/30
+ */
+@Aspect
+@Slf4j
+public class DisLockAspect {
+
+    private static final ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
+
+    @Autowired
+    private cn.com.bsfit.rgas.common.cache.DisLock disLockService;
+
+    @Around("@annotation(disLock)")
+    public Object invoke(ProceedingJoinPoint pjp, DisLock disLock) throws Throwable {
+
+        if (!StringUtils.hasText(disLock.lockName()) && !StringUtils.hasText(disLock.lockKey())) {
+            throw new IllegalArgumentException("分布式锁id参数不能全为空");
+        }
+
+        final String lockId = getDisKey(disLock.lockName(), disLock.lockKey(), ((MethodSignature) pjp.getSignature()).getMethod(), pjp.getArgs());
+        if (!StringUtils.hasText(lockId)) {
+            throw new IllegalArgumentException(String.format("分布式锁id解析为空,lockName:%s,lockKey:%s,方法:%s,参数值:%s", disLock.lockName(), disLock.lockKey(),
+                    StringUtils.arrayToCommaDelimitedString(((MethodSignature) pjp.getSignature()).getMethod().getParameters()),
+                    StringUtils.arrayToCommaDelimitedString(pjp.getArgs())));
+        }
+
+        return invokeWithDisLock(lockId, disLock.expireTime(), disLock.policy(), pjp);
+    }
+
+    public Object invokeWithDisLock(String lockId, int expireTime, Policy policy, ProceedingJoinPoint pjp) throws
+            Throwable {
+
+        String name = pjp.getSignature().getDeclaringTypeName();
+        String className = name.substring(name.lastIndexOf(".") + 1);
+        final String mName = className + "#" + pjp.getSignature().getName();
+
+        log.debug("方法:[{}] 申请获取分布式锁[{}]", mName, lockId);
+
+        boolean lock = disLockService.tryLock(lockId, expireTime);
+        if (lock) {
+            try {
+                log.debug("方法:[{}] 申请获取分布式锁[{}]成功", mName, lockId);
+                return pjp.proceed(pjp.getArgs());
+            } finally {
+                disLockService.unLock(lockId);
+                log.debug("方法:[{}] 释放分布式锁[{}]成功", mName, lockId);
+            }
+        } else {
+            log.debug("方法:[{}] 获取分布式锁[{}]失败,方法链终止执行", mName, lockId);
+            // 按照处理策略执行
+            return policy.handle(lockId, mName);
+        }
+    }
+
+    public static String getDisKey(String lockName, String lockKey, Method method, Object[] args) {
+        if (StringUtils.hasText(lockKey)) {
+            EvaluationContext context = new MethodBasedEvaluationContext(TypedValue.NULL, method, args, parameterNameDiscoverer);
+            ExpressionParser parser = new SpelExpressionParser();
+            Expression expression = parser.parseExpression(lockKey);
+            Object value = expression.getValue(context);
+            return StringUtils.hasText(lockName) ?
+                    lockName + ObjectUtils.nullSafeToString(value) :
+                    value == null ? null : value.toString();
+        } else {
+            return lockName;
+        }
+    }
+}
