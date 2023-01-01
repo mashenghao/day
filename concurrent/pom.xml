@@ -2,32 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>day</artifactId>
+        <groupId>cn.mh</groupId>
+        <version>1.0</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>cn.mh</groupId>
-    <artifactId>day</artifactId>
     <packaging>pom</packaging>
-    <version>1.0</version>
-    <modules>
-        <module>javaBasic</module>
-        <module>algo</module>
-        <module>classloader</module>
-        <module>designPattern</module>
-        <module>netty-learn</module>
-        <module>concurrent</module>
-    </modules>
+    <artifactId>concurrent</artifactId>
 
+    <modules>
+        <module>basic</module>
+        <module>design_pattern</module>
+        <module>juc</module>
+    </modules>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-        </dependency>
-    </dependencies>
 
 </project>
