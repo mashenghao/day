@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" packages="">
+
+    <Properties>
+        <!-- 日志最大的历史 -->
+        <property name="MAX_HISTORY" value="30"/>
+        <!-- 组件名称 -->
+        <property name="MODULE_NAME" value="bsfit-graph-engine"/>
+        <!-- 日志文件目录 -->
+        <property name="DIR" value="logs"/>
+        <!-- 日志文件大小上限 -->
+        <property name="MAX_FILE_SIZE" value="100MB"/>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <Filters>
+                <!--如果日志事件LogEvent中有COLLECTED标记，则直接拒绝这个日志事件-->
+                <MarkerFilter marker="EVENT_DATA" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+                <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <!-- error级别单独记录 -->
+        <!--filePattern表示出发rollover，生成新的日志文件时，旧的日志文件改名的格式-->
+        <RollingFile name="errorAppender" fileName="${DIR}/${MODULE_NAME}-error.log"
+                     filePattern="${DIR}/${MODULE_NAME}-error/${MODULE_NAME}-error-%d{yyyy-MM-dd}.%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} %X{traceId} - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- 以day为单位自动回滚 -->
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <!--当文件大小到达100M时-->
+                <SizeBasedTriggeringPolicy size="${MAX_FILE_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${DIR}" maxDepth="2">
+                    <!--glob参数需要查询是否能够匹配到日志文件，不然无法删除，一般如果有子文件夹需要为*/*.log.gz-->
+                    <IfFileName glob="*/*.log.gz"/>
+                    <!--!Note: 这里的age必须和filePattern协调, 后者是精确到dd, 这里就要写成xd, xD就不起作用
+                    另外, 数字最好>2, 否则可能造成删除的时候, 最近的文件还处于被占用状态,导致删除不成功!-->
+                    <!--7天-->
+                    <IfLastModified age="${MAX_HISTORY}d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <!--添加过滤器ThresholdFilter,可以有选择的输出某个级别以上的类别  onMatch="ACCEPT" onMismatch="DENY"意思是匹配就接受,否则直接拒绝  -->
+            <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+        </RollingFile>
+
+        <!-- warn级别单独记录 -->
+        <!--filePattern表示出发rollover，生成新的日志文件时，旧的日志文件改名的格式-->
+        <RollingFile name="warnAppender" fileName="${DIR}/${MODULE_NAME}-warn.log"
+                     filePattern="${DIR}/${MODULE_NAME}-warn/${MODULE_NAME}-warn-%d{yyyy-MM-dd}.%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} %X{traceId} - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- 以day为单位自动回滚 -->
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <!--当文件大小到达100M时-->
+                <SizeBasedTriggeringPolicy size="${MAX_FILE_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${DIR}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <!--!Note: 这里的age必须和filePattern协调, 后者是精确到dd, 这里就要写成xd, xD就不起作用
+                    另外, 数字最好>2, 否则可能造成删除的时候, 最近的文件还处于被占用状态,导致删除不成功!-->
+                    <!--7天-->
+                    <IfLastModified age="${MAX_HISTORY}d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <!--添加过滤器ThresholdFilter,可以有选择的输出某个级别以上的类别  onMatch="ACCEPT" onMismatch="DENY"意思是匹配就接受,否则直接拒绝  -->
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+        </RollingFile>
+
+        <!--info级别单独记录-->
+        <RollingFile name="infoAppender" fileName="${DIR}/${MODULE_NAME}-info.log"
+                     filePattern="${DIR}/${MODULE_NAME}-info/${MODULE_NAME}-%d{yyyy-MM-dd}.%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{35} %X{traceId} - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- 以day为单位自动回滚 -->
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <!--当文件大小到达100M时-->
+                <SizeBasedTriggeringPolicy size="${MAX_FILE_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${DIR}" maxDepth="2">
+                    <IfFileName glob="*/*.log.gz"/>
+                    <!--!Note: 这里的age必须和filePattern协调, 后者是精确到dd, 这里就要写成xd, xD就不起作用
+                    另外, 数字最好>2, 否则可能造成删除的时候, 最近的文件还处于被占用状态,导致删除不成功!-->
+                    <!--7天-->
+                    <IfLastModified age="${MAX_HISTORY}d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <!--添加过滤器ThresholdFilter,可以有选择的输出某个级别以上的类别  onMatch="ACCEPT" onMismatch="DENY"意思是匹配就接受,否则直接拒绝  -->
+            <!--<ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>-->
+        </RollingFile>
+
+        <RollingFile name="JsonFile" fileName="${DIR}/json/${MODULE_NAME}.log"
+                     filePattern="${DIR}/json/${MODULE_NAME}/${MODULE_NAME}-%d{yyyy-MM-dd}.%i.log.gz">
+            <Policies>
+                <!-- 以day为单位自动回滚 -->
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+                <!--当文件大小到达100M时-->
+                <SizeBasedTriggeringPolicy size="${MAX_FILE_SIZE}"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${DIR}" maxDepth="2">
+                    <IfFileName glob="*.log.gz"/>
+                    <!--!Note: 这里的age必须和filePattern协调, 后者是精确到dd, 这里就要写成xd, xD就不起作用
+                    另外, 数字最好>2, 否则可能造成删除的时候, 最近的文件还处于被占用状态,导致删除不成功!-->
+                    <!--7天-->
+                    <IfLastModified age="${MAX_HISTORY}d"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <JsonLayout compact="true" locationInfo="false" complete="false" eventEol="true">
+                <KeyValuePair key="app_name" value="${MODULE_NAME}"/>
+                <KeyValuePair key="message_time" value="$${date:yyyy-MM-dd HH:mm:ss.SSS}"/>
+            </JsonLayout>
+        </RollingFile>
+
+        <Async name="ASYNJsonAppender" bufferSize="512" blocking="true">
+            <AppenderRef ref="JsonFile"/>
+        </Async>
+
+        <Async name="ASYNCSTDOUT" bufferSize="512">
+            <AppenderRef ref="Console"/>
+        </Async>
+
+        <Async name="ASYNCerrorAppender" bufferSize="512">
+            <AppenderRef ref="errorAppender"/>
+        </Async>
+
+        <Async name="ASYNCwarnAppender" bufferSize="512">
+            <AppenderRef ref="warnAppender"/>
+        </Async>
+
+        <Async name="ASYNCinfoAppender" bufferSize="512" >
+            <AppenderRef ref="infoAppender"/>
+        </Async>
+
+    </Appenders>
+
+    <loggers>
+
+        <logger name="cn.com.bsfit.frms.graph.engine" level="INFO"/>
+
+        <!-- 根，所有logger的祖先 -->
+        <root level="DEBUG" includeLocation="false">
+            <AppenderRef ref="ASYNCSTDOUT"/>
+        </root>
+    </loggers>
+</Configuration>

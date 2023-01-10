@@ -1,0 +1,19 @@
+broadcast_4_piece0
+21/01/01 22:05:07 INFO SparkContext: Created broadcast 4 from broadcast at DAGScheduler.scala:839
+21/01/01 22:05:07 INFO DAGScheduler: Submitting 2 missing tasks from Stage 4 (MapPartitionsRDD[9] at sortBy at AwcSort.scala:27)
+21/01/01 22:05:07 INFO TaskSchedulerImpl: Adding task set 4.0 with 2 tasks
+21/01/01 22:05:07 INFO TaskSetManager: Starting task 0.0 in stage 4.0 (TID 6, localhost, PROCESS_LOCAL, 1056 bytes)
+21/01/01 22:05:07 INFO TaskSetManager: Starting task 1.0 in stage 4.0 (TID 7, localhost, PROCESS_LOCAL, 1056 bytes)
+21/01/01 22:05:07 INFO Executor: Running task 1.0 in stage 4.0 (TID 7)
+21/01/01 22:05:07 INFO Executor: Running task 0.0 in stage 4.0 (TID 6)
+21/01/01 22:05:07 INFO ShuffleBlockFetcherIterator: Getting 2 non-empty blocks out of 2 blocks
+21/01/01 22:05:07 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 1 ms
+21/01/01 22:05:07 INFO ShuffleBlockFetcherIterator: Getting 2 non-empty blocks out of 2 blocks
+21/01/01 22:05:07 INFO ShuffleBlockFetcherIterator: Started 0 remote fetches in 0 ms
+21/01/01 22:05:07 INFO Executor: Finished task 1.0 in stage 4.0 (TID 7). 886 bytes result sent to driver
+21/01/01 22:05:07 INFO TaskSetManager: Finished task 1.0 in stage 4.0 (TID 7) in 13 ms on localhost (1/2)
+21/01/01 22:05:07 INFO Executor: Finished task 0.0 in stage 4.0 (TID 6). 886 bytes result sent to driver
+21/01/01 22:05:07 INFO TaskSetManager: Finished task 0.0 in stage 4.0 (TID 6) in 15 ms on localhost (2/2)
+21/01/01 22:05:07 INFO DAGScheduler: Stage 4 (foreach at AwcSort.scala:28) finished in 0.016 s
+21/01/01 22:05:07 INFO TaskSchedulerImpl: Removed TaskSet 4.0, whose tasks have all completed, from pool 
+21/01/01 22:05:07 INFO DAGScheduler: Job 1 finished: foreach at AwcSort.scala:28, took 0.089341 s
