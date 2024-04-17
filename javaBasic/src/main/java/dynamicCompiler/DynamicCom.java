@@ -1,6 +1,6 @@
 package dynamicCompiler;
 
-import com.oracle.tools.packager.IOUtils;
+//import com.oracle.tools.packager.IOUtils;
 import dynamicCompiler.dynamic.ByteClassLoader;
 import dynamicCompiler.dynamic.DynamicCompiler;
 import dynamicCompiler.p3.IRule;
@@ -41,7 +41,7 @@ public class DynamicCom {
             //1.交由字节数组加载器去加载这个类，因为源码中用到了Dog，而这个Dog类系统类加载器扫描不到，所以交由byteClassLoader，
             //当编译源码时，编译器发现这个类，就能通过byteClassLoader找到。
             ByteClassLoader byteClassLoader = new ByteClassLoader();
-            byteClassLoader.putClass("dynamicCompiler.p2.Dog", IOUtils.readFully(new File("C:\\Users\\bangsun\\Desktop\\动态编译\\classes\\dynamicCompiler\\p2\\Dog.class")));
+//            byteClassLoader.putClass("dynamicCompiler.p2.Dog", IOUtils.readFully(new File("C:\\Users\\bangsun\\Desktop\\动态编译\\classes\\dynamicCompiler\\p2\\Dog.class")));
 
             //1. 编译为字节码
             byte[] bytes = dynamicCompiler(RULE_CLASS_NAME, RULE_SOURCE, byteClassLoader);

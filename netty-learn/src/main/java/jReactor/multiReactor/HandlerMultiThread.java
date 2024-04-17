@@ -124,6 +124,7 @@ public class HandlerMultiThread implements Runnable {
         int readSize = socket.read(input);
         if (inputIsComplete(readSize)) {
             //读完后，业务处理，是在线程池中进行异步处理。
+            //input转为对象数据
             state = PROCESSING;
             businessExecutors.execute(() -> {
                 //TODO: 必须加同步锁的原因  为了和外层的read方法互斥，两个方法只能执行一个。 不让业务读的同时，再去进行read下一次channel read的操作，
