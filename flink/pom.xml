@@ -3,12 +3,8 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>cn.mh</groupId>
-        <artifactId>day</artifactId>
-        <version>1.0</version>
-    </parent>
 
+    <version>1.0</version>
     <groupId>org.example</groupId>
     <artifactId>flink</artifactId>
 
@@ -27,11 +23,11 @@
 
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.apache.bahir</groupId>-->
-<!--            <artifactId>flink-connector-redis_2.11</artifactId>-->
-<!--            <version>1.0</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.bahir</groupId>-->
+        <!--            <artifactId>flink-connector-redis_2.11</artifactId>-->
+        <!--            <version>1.0</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-table-api-scala-bridge_${scala.version}</artifactId>
@@ -94,8 +90,6 @@
         </dependency>
 
 
-
-
         <!--<dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-jdbc_${scala.version}</artifactId>
@@ -108,11 +102,11 @@
             <version>8.0.26</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.apache.doris</groupId>-->
-<!--            <artifactId>flink-doris-connector-1.15</artifactId>-->
-<!--            <version>1.2.1</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.doris</groupId>-->
+        <!--            <artifactId>flink-doris-connector-1.15</artifactId>-->
+        <!--            <version>1.2.1</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.ververica</groupId>
             <artifactId>flink-connector-mysql-cdc</artifactId>
