@@ -2,11 +2,11 @@ package collection.list;
 
 
 import atomic.ThreadUtil;
-import collection.list.src.CopyOnWriteArrayList;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;

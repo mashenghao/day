@@ -10,6 +10,7 @@ import io.netty.handler.logging.LoggingHandler;
 /**
  *
  * hello world
+ *
  * @author mahao
  * @date 2022/10/12
  */
@@ -40,7 +41,7 @@ public class HelloServer {
             ChannelFuture channelFuture = serverBootstrap.bind(9999).sync();
             channelFuture.channel().closeFuture().sync();
 
-        }finally {
+        } finally {
             bossGroup.shutdownGracefully();
 
             workerGroup.shutdownGracefully();

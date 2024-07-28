@@ -1,4 +1,4 @@
-package dynamicCompiler.p3;
+package dynamicCompiler;
 
 /**
  * @author mahao

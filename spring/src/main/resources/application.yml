@@ -4,3 +4,15 @@ spring:
     password: 123456
     url: jdbc:mysql://localhost:3306/d1?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.jdbc.Driver
+
+server:
+  port: 8001
+  servlet:
+    context-path: /aa
+  tomcat:
+    threads:
+      max: 200
+logging:
+  level:
+    root: info
+

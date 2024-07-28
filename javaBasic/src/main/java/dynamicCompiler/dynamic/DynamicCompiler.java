@@ -1,6 +1,8 @@
 package dynamicCompiler.dynamic;
 
 
+import cn.hutool.core.compiler.CompilerException;
+
 import javax.tools.*;
 import java.util.*;
 
@@ -71,6 +73,10 @@ public class DynamicCompiler {
         //阻塞 等待编译完成
         task.call();
 
+        List<Diagnostic<? extends JavaFileObject>> list = diagnostics.getDiagnostics();
+        if (!list.isEmpty()) {
+            throw new CompilerException(list.toString());
+        }
         Map<String, byte[]> classesMap = new HashMap(this.manager.compiledClasses.size());
         for (Map.Entry<String, ByteArrayJavaFileObject> en : manager.compiledClasses.entrySet()) {
             classesMap.put(en.getKey(), en.getValue().getBytes());

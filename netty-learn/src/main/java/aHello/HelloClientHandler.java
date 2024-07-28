@@ -29,7 +29,6 @@ public class HelloClientHandler extends SimpleChannelInboundHandler<HttpObject> 
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
-
         System.err.println(str);
         System.out.println(msg);
         ByteBuf content = Unpooled.copiedBuffer("hello world", CharsetUtil.UTF_8);
@@ -38,7 +37,7 @@ public class HelloClientHandler extends SimpleChannelInboundHandler<HttpObject> 
         response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, content.readableBytes());
 
-//        ctx.fireChannelRead(msg);
+        ctx.fireChannelRead(msg);
 
         //pipline 从当前handler为最后一个OutBoundHandler开始向外写出。
 //        ctx.writeAndFlush(response);

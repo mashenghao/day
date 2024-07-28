@@ -20,7 +20,6 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 import atomic.ThreadUtil;
-import sun.misc.SharedSecrets;
 
 /**
  * 初始化的时候，是一个空数组，个数为1。当线程对集合进行读操作时，不会发生问题，多个线程

@@ -159,7 +159,7 @@ public class HandlerMultiThread implements Runnable {
     }
 
     private boolean inputIsComplete(int readSize) throws EOFException {
-        if (readSize == -1) {
+        if (readSize == -1) { //当client关闭连接时，这里会被唤醒，并且读取到-1
             throw new EOFException("数据读到的是-1");
         }
         if (readSize == 0) {

@@ -23,6 +23,10 @@ public class ByteClassLoader extends ClassLoader {
         classes.put(className, byteSource);
     }
 
+    public void putJar(String className, byte[] jarSo) {
+        //jar classpath
+    }
+
     public ByteClassLoader() {
         super(Thread.currentThread().getContextClassLoader());
     }

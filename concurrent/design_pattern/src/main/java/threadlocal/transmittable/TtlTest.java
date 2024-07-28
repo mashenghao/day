@@ -3,6 +3,7 @@ package threadlocal.transmittable;
 import com.alibaba.ttl.TransmittableThreadLocal;
 import com.alibaba.ttl.TtlCallable;
 import com.alibaba.ttl.TtlCopier;
+import com.alibaba.ttl.TtlRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,7 @@ public class TtlTest {
 
 
         // =========================
+        TtlRunnable.get(()->{});
         TtlCallable<Object> callable = TtlCallable.get(() -> {
             List<String> list1 = threadLocal1.get();
             System.out.println("改造后，在线程池中获取threadlocal值能取到：" + list1);

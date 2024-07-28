@@ -14,7 +14,8 @@ public class MyServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         System.out.println("服务端--> " + ctx.channel().remoteAddress().toString() + " : " + msg);
-        ctx.channel().writeAndFlush("from server : " + UUID.randomUUID());
+        ctx.channel().writeAndFlush("from server : " + UUID.randomUUID()); //从尾到头
+//        ctx.writeAndFlush() //从当前节点开始
         //关闭服务端到客户端的通道 ，接收到客户端的一个消息后，就关闭了服务端到客户端方向的通道。
         ctx.close();
     }

@@ -66,7 +66,7 @@ public class FutureTest1 {
          */
         executors.execute(() -> {
             try {
-                System.out.println("线程内执行同步等待了，这种情况下该抛出异常");
+//                System.out.println("线程内执行同步等待了，这种情况下该抛出异常");
                 promise.sync();
             } catch (InterruptedException e) {
                 e.printStackTrace();

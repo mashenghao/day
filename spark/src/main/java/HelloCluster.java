@@ -1,3 +1,4 @@
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
@@ -37,5 +38,9 @@ public class HelloCluster {
         List<Tuple2<String, Integer>> list = reduceRdd.collect();
         System.out.println("=======================任务运行结束:在driver端打印结果是：===========================\n" + list);
         sc.close();
+
+
+        FileSystem fileSystem;
+        fileSystem.create().write(new byte[1000]);
     }
 }
