@@ -24,7 +24,6 @@ public class ProduceConsumer3 {
                         e.printStackTrace();
                     }
                 }
-
                 i++;
                 System.out.println(Thread.currentThread().getName() + "P-->" + i);
                 lock.notifyAll();//生产完毕后，唤醒要消费者的 阻塞线程
@@ -34,8 +33,8 @@ public class ProduceConsumer3 {
     }
 
     public void consumer() {
-        while (true) {
-            synchronized (lock) {
+        synchronized (lock) {
+            while (true) {
                 while (i < 1) {
                     //仓库中没有商品了，则要阻塞等待生产
                     try {
@@ -44,21 +43,16 @@ public class ProduceConsumer3 {
                         e.printStackTrace();
                     }
                 }
-
                 System.out.println(Thread.currentThread().getName() + "C-->" + i);
                 i--;
                 lock.notifyAll();//仓库有空余，通过生产者生产
-
             }
         }
-
     }
 
     public static void main(String[] args) {
         ProduceConsumer3 produceConsumer = new ProduceConsumer3();
-        ThreadUtil.execute(() -> {
-            produceConsumer.produce();
-        });
+
         ThreadUtil.execute(() -> {
             produceConsumer.produce();
         });
@@ -66,6 +60,10 @@ public class ProduceConsumer3 {
         ThreadUtil.execute(() -> {
             produceConsumer.consumer();
         });
+        ThreadUtil.execute(() -> {
+            produceConsumer.consumer();
+        });
+
         ThreadUtil.execute(() -> {
             produceConsumer.consumer();
         });

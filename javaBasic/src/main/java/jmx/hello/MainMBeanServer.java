@@ -20,7 +20,7 @@ import java.rmi.registry.LocateRegistry;
  */
 public class MainMBeanServer {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         //1. 先获取到MBeanServer
         MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
 
@@ -29,8 +29,26 @@ public class MainMBeanServer {
             ObjectName objectName = new ObjectName("cn.mh.jmx:type=User,name=userMbean01");
 
             //3.注册进去，参数MBean 和 bean的名字
-            mBeanServer.registerMBean(new User(), objectName);
+            User user01 = new User();
+            mBeanServer.registerMBean(user01, objectName);
             mBeanServer.registerMBean(new User(), new ObjectName("cn.mh.jmx:type=User,name=userMbean02"));
+
+            //1. get方法 获取mbean的元数据
+            MBeanInfo mBeanInfo = mBeanServer.getMBeanInfo(new ObjectName("cn.mh.jmx:type=User,name=userMbean01"));
+
+            //2. set方法执行
+            AttributeList objects = new AttributeList();
+            objects.add(new Attribute("Name", "zs100"));
+            AttributeList result = mBeanServer.setAttributes(objectName, objects);
+            System.out.println(result);
+
+            //3. get 获取mbean属性值
+            AttributeList attributes = mBeanServer.getAttributes(objectName, new String[]{"Name", "Phone"});
+            System.out.println(attributes);
+
+            //4. 执行方法
+            mBeanServer.invoke(objectName, "say", new Object[0], new String[0]);
+
 
 //            //这个步骤很重要，注册一个端口，绑定url后用于客户端通过rmi方式连接JMXConnectorServer
 //            LocateRegistry.createRegistry(8999);

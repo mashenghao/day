@@ -13,7 +13,7 @@ import chapter3_methods.ThreadUtil;
  */
 public class ProduceConsumer2 {
 
-    int i=0;
+    int i = 0;
     byte[] lock = new byte[1];
 
     public void produce() {
@@ -53,6 +53,26 @@ public class ProduceConsumer2 {
                     }
                 }
             }
+    }
+
+    public void consumer1() {
+        synchronized (lock) {
+            while (true) {
+                ThreadUtil.sleep(1000);
+                if (i > 0) {//仓库中存在商品，则直接消费
+                    System.out.println("C-->" + i);
+                    i--;
+                    lock.notify();//仓库有空余，通过生产者生产
+                } else {
+                    //仓库中没有商品了，则要阻塞等待生产
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     public static void main(String[] args) {

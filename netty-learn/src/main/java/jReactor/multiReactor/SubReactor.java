@@ -13,6 +13,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RunnableFuture;
 
 /**
+ * netty的分发器:
+ *
  * 每一个 SubReactorThread负责监听一个selector， 从mainReactor那边accept过来的channel，
  * 会注册到其中的一个selector上，只需要负责其中一个就。
  */

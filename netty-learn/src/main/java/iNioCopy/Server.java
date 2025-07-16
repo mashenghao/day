@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 /**
  * 测试 传统文件拷贝到远程网络socket中，这个是服务端
@@ -27,6 +28,8 @@ public class Server {
                 size += readLen;
             }
             System.out.println("读取数据完成： " + (System.currentTimeMillis() - l) + "  大小:" + size);
+            socket.shutdownInput();
+            socket.shutdownOutput();
         }
     }
 }

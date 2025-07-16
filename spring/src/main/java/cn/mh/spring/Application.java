@@ -19,14 +19,14 @@ public class Application {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
 
-        MyService myService = context.getBean(MyService.class);
-        MyService2 myService2 = context.getBean(MyService2.class);
-
-        // 执行事务操作
-        myService.performTransactionalOperation();
-        myService2.performTransactionalOperation();
-
-        context.close();
+//        MyService myService = context.getBean(MyService.class);
+//        MyService2 myService2 = context.getBean(MyService2.class);
+//
+//        // 执行事务操作
+//        myService.performTransactionalOperation();
+//        myService2.performTransactionalOperation();
+//
+//        context.close();
     }
 
 }

@@ -14,6 +14,36 @@ import java.util.concurrent.locks.LockSupport;
  * <p>
  * 3.unPark 作用： 可以唤醒一个被park的线程
  *
+ *  * --------------  java的park 暂停当前线程 与 mutux的wait实现思路一样--------
+ *  * void Parker::park() {
+ *  *     // 原子交换操作：将_counter设为0并返回旧值
+ *  *     // 如果旧值>0，表示存在许可，直接返回  先用jvm内部结构，判断一下是否有许可证，也就时别人唤醒过，没有的话，才去操作系统的mutux。
+ *  *     if (Atomic::xchg(0, &_counter) > 0)
+ *  *         return;
+ *  *
+ *  *     // 获取操作系统的 mutux的锁，  加锁后再去调用wait
+ *  *     pthread_mutex_lock(_mutex);        // 获取互斥锁
+ *  *
+ *  *     // 循环等待（防御虚假唤醒）
+ *  *     while (_counter <= 0) {  //当被唤醒后， 判断count是否> 0,如果大于0了，则表示有别的地方掉过mutux的signal，然后将 count进行++。
+ *  *         // 线程在此阻塞，释放_mutex锁
+ *  *         pthread_cond_wait(_cond, _mutex);  //否则阻塞， 并去释放锁， 唤醒其他进程操作，操作完成后 调用unpark， 将count++， 这里就能用了。
+ *  *     }
+ *  *
+ *  *     _counter = 0;                     // 消费许可
+ *  *     pthread_mutex_unlock(_mutex);      // 释放互斥锁
+ *  * }
+ *  *
+ *  * void Parker::unpark() {
+ *  *     // 原子交换操作：设置_counter为1并返回旧值
+ *  *     // 如果旧值==0，表示需要唤醒阻塞线程   只有有线程等着 才去唤醒。
+ *  *     if (Atomic::xchg(1, &_counter) == 0) {
+ *  *         pthread_mutex_lock(_mutex);     // 获取互斥锁
+ *  *         pthread_cond_signal(_cond);     // 唤醒一个等待线程
+ *  *         pthread_mutex_unlock(_mutex);   // 释放互斥锁
+ *  *     }
+ *  * }
+ *
  * @author mahao
  * @date 2022/06/10
  */
@@ -32,6 +62,7 @@ public class LockSupportTest {
             while (!Thread.interrupted()) {
                 System.out.println("我是线程t1，我被调度了");
                 LockSupport.park(this);
+                LockSupport.park();
                 System.out.println("我是线程t1，我被唤醒了" + Thread.currentThread().isInterrupted());
             }
         });
